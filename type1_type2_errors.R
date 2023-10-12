@@ -22,14 +22,16 @@ f2 <- function(..., B = 100) {
   })
 }
 
-inputs <- expand.grid(n = c(50, 500, 5000), effect = c(0, 0.05, 0.2))
+inputs <- expand.grid(n = c(50, 500, 5000, 50000), effect = c(0, 0.01, 0.1, 0.3))
 
+set.seed(22)
 n_sig <- mapply(f2,
-                nvar = 21,
+                nvar = 6, # number of variables is arbitrary in this simulation
                 obs = inputs$n,
                 effect = inputs$effect,
                 B = 1e4, # this takes a while - set B to a lower value to run the code quickly
                 SIMPLIFY = F)
 
 inputs$n_sig <- sapply(n_sig, mean)
-inputs$prop_sig <- inputs$n_sig / 20
+inputs$prop_sig <- inputs$n_sig / 5
+round(matrix(inputs$prop_sig, ncol = 4) * 100, 0)
